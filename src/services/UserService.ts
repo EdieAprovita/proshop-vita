@@ -93,6 +93,14 @@ class UserService {
 		return updatedUser;
 	}
 
+	async logoutUser(res: Response) {
+		res.cookie("token", "none", {
+			expires: new Date(Date.now() + 10 * 1000),
+			httpOnly: true,
+		});
+		return { message: "User logged out" };
+	}
+
 	async deleteUserById(userId: string) {
 		const user = await User.findByIdAndDelete(userId);
 		if (!user) {

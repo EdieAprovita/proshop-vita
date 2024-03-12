@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 
 import connectDB from "./config/db";
 
+import userRoutes from "./routes/userRoutes";
+
 dontenv.config();
 connectDB();
 
@@ -17,5 +19,7 @@ app.use(cookieParser());
 app.get("/api/v1", (req, res) => {
 	res.send("API is running...");
 });
+
+app.use("/api/v1/users", userRoutes);
 
 export default app;
