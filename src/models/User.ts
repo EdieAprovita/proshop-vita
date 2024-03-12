@@ -2,12 +2,15 @@ import bcrypt from "bcryptjs";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
+	_id?: string;
 	username: string;
 	email: string;
 	password: string;
 	isAdmin: boolean;
-	createdAt: Date;
-	updatedAt: Date;
+	timestamps: {
+		createdAt: Date;
+		updatedAt: Date;
+	};
 	matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
 
@@ -30,16 +33,6 @@ const userSchema = new Schema<IUser>(
 			type: Boolean,
 			required: true,
 			default: false,
-		},
-		createdAt: {
-			type: Date,
-			required: true,
-			default: Date.now,
-		},
-		updatedAt: {
-			type: Date,
-			required: true,
-			default: Date.now,
 		},
 	},
 	{ timestamps: true }

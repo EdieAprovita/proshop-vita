@@ -8,7 +8,7 @@ class UserService {
 		userData: Pick<IUser, "username" | "email" | "password">,
 		res: Response
 	) {
-		const { email, password, username } = userData;
+		const { email } = userData;
 
 		const userExists = await User.findOne({ email });
 
@@ -16,15 +16,12 @@ class UserService {
 			throw new BadRequestError("User already exists");
 		}
 
-		const user = await User.create({
-			email,
-			password,
-			username,
-		});
+		const user = await User.create(userData);
 
 		generateTokenAndSetCookie(res, user._id);
 
 		return {
+			message: "User registered successfully",
 			user: {
 				_id: user._id,
 				username: user.username,

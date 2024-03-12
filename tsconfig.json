@@ -11,7 +11,9 @@
 		"sourceMap": true,
 		"esModuleInterop": true,
 		"outDir": "./dist",
-		"rootDir": "./src"
+		"rootDir": "./src",
+		"types": ["node", "express"],
+		"typeRoots": ["./node_modules/@types", "./types"]
 	},
 
 	"include": ["src/app.ts"],
