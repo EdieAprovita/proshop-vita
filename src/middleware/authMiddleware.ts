@@ -1,17 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
+import "../types/global";
 import asyncHandler from "./asyncHandler";
 import { NotAuthorizedError } from "../types/Errors";
-import { User, IUser } from "../models/User";
-
-declare global {
-	namespace Express {
-		interface Request {
-			user?: IUser;
-		}
-	}
-}
+import { User } from "../models/User";
 
 /**
  * Get the JWT token from the request cookies
@@ -38,7 +31,7 @@ export const protect = asyncHandler(
 		}
 
 		try {
-			const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET as string);
+			const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET);
 			req.user = await User.findById(decodedToken.userId).select("-password");
 			next();
 		} catch (error) {
