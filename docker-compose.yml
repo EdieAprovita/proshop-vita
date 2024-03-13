@@ -1,7 +1,7 @@
-version: '3.8'
+version: "3.8"
 services:
   app:
-    container_name: api-guidetypescript
+    container_name: proshop-vita
     build:
       context: .
       dockerfile: .dockerfile

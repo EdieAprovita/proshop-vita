@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import asyncHandler from "../middleware/asyncHandler";
-import UserService from "../services/userService";
+import { userService as UserService } from "../services/UserService";
 
 /**
  * @description Register a new user
