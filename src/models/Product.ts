@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema, Document, model } from "mongoose";
 
 import { IReview } from "./Review";
 
@@ -20,10 +20,10 @@ export interface IProduct extends Document {
 	};
 }
 
-const productSchema = new mongoose.Schema<IProduct>(
+const productSchema = new Schema<IProduct>(
 	{
 		user: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			required: true,
 			ref: "User",
 		},
@@ -47,7 +47,7 @@ const productSchema = new mongoose.Schema<IProduct>(
 			type: String,
 			required: true,
 		},
-		reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+		reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 		rating: {
 			type: Number,
 			required: true,
@@ -74,4 +74,4 @@ const productSchema = new mongoose.Schema<IProduct>(
 	}
 );
 
-export const Product = mongoose.model<IProduct>("Product", productSchema);
+export const Product = model<IProduct>("Product", productSchema);

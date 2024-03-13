@@ -3,7 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 
 import connectDB from "./config/db";
-import { errorHandler } from "./middleware/errorHandler";
+import { errorHandler, notFound } from "./middleware/errorHandler";
 
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productsRoutes";
@@ -25,6 +25,7 @@ app.get("/api/v1", (req, res) => {
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/products", productRoutes);
 
+app.use(notFound);
 app.use(errorHandler);
 
 export default app;
