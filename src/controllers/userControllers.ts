@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import asyncHandler from "../middleware/asyncHandler";
 import { userService as UserService } from "../services/UserService";
+import { BadRequestError, NotFoundError, NotAuthorizedError } from "../types/Errors";
 
 /**
  * @description Register a new user
@@ -12,9 +13,16 @@ import { userService as UserService } from "../services/UserService";
 
 export const registerUser = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const result = await UserService.registerUser(req.body, res);
-		res.status(201).json(result);
-		next();
+		try {
+			const result = await UserService.registerUser(req.body, res);
+			res.status(201).json(result);
+		} catch (error) {
+			if (error instanceof BadRequestError) {
+				res.status(400).json({ error: error.message });
+			} else {
+				next(error);
+			}
+		}
 	}
 );
 
@@ -28,9 +36,13 @@ export const registerUser = asyncHandler(
 
 export const loginUser = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const { email, password } = req.body;
-		const result = await UserService.loginUser(email, password, res);
-		res.status(200).json(result);
+		try {
+			const { email, password } = req.body;
+			const result = await UserService.loginUser(email, password, res);
+			res.status(200).json(result);
+		} catch (error) {
+			throw new NotAuthorizedError("Invalid credentials");
+		}
 		next();
 	}
 );
@@ -45,8 +57,12 @@ export const loginUser = asyncHandler(
 
 export const getUsers = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const result = await UserService.findAllUsers();
-		res.status(200).json(result);
+		try {
+			const result = await UserService.findAllUsers();
+			res.status(200).json(result);
+		} catch (error) {
+			throw new NotFoundError("Users not found");
+		}
 		next();
 	}
 );
@@ -61,8 +77,12 @@ export const getUsers = asyncHandler(
 
 export const getUserById = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const result = await UserService.findUserById(req.params.id);
-		res.status(200).json(result);
+		try {
+			const result = await UserService.findUserById(req.params.id);
+			res.status(200).json(result);
+		} catch (error) {
+			throw new NotFoundError("User not found");
+		}
 		next();
 	}
 );
@@ -77,9 +97,13 @@ export const getUserById = asyncHandler(
 
 export const updateUser = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const userId = req.params.id;
-		const updateUser = await UserService.updateUserById(userId, req.body);
-		res.status(200).json(updateUser);
+		try {
+			const userId = req.params.id;
+			const updateUser = await UserService.updateUserById(userId, req.body);
+			res.status(200).json(updateUser);
+		} catch (error) {
+			throw new NotFoundError("User not found");
+		}
 		next();
 	}
 );
@@ -93,8 +117,12 @@ export const updateUser = asyncHandler(
 
 export const logout = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const result = await UserService.logoutUser(res);
-		res.status(200).json(result);
+		try {
+			const result = await UserService.logoutUser(res);
+			res.status(200).json(result);
+		} catch (error) {
+			throw new BadRequestError("Invalid request");
+		}
 		next();
 	}
 );
@@ -109,8 +137,12 @@ export const logout = asyncHandler(
 
 export const deleteUser = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const result = await UserService.deleteUserById(req.params.id);
-		res.status(200).json(result);
+		try {
+			const result = await UserService.deleteUserById(req.params.id);
+			res.status(200).json(result);
+		} catch (error) {
+			throw new NotAuthorizedError("Not authorized");
+		}
 		next();
 	}
 );
