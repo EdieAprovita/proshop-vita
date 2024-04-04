@@ -42,3 +42,9 @@ export class DataNotFoundError extends CustomError {
 		super(message, 404);
 	}
 }
+
+export class ValidationId extends CustomError {
+	constructor(message: string = "Invalid ID") {
+		super(message, 400);
+	}
+}

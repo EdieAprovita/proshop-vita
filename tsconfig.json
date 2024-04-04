@@ -1,8 +1,4 @@
 {
-	"ts-node": {
-		"transpileOnly": true,
-		"files": true
-	},
 	"compilerOptions": {
 		"allowJs": true,
 		"target": "ES6",
@@ -16,6 +12,6 @@
 		"typeRoots": ["./node_modules/@types", "./types"]
 	},
 
-	"include": ["src/app.ts"],
+	"include": ["src/**/*.ts", "types/**/*.d.ts"],
 	"exclude": ["node_modules", "dist", "test"]
 }
